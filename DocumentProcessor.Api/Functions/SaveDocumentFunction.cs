@@ -19,6 +19,12 @@ using Newtonsoft.Json;
 
 namespace DocumentProcessor.Api.Functions
 {
+    public class SaveDocumentRequest
+    {
+        public string Id { get; set; }
+        public string Data { get; set; }
+    }
+
     public class SaveDocumentFunction
     {
         private readonly ILogger<SaveDocumentFunction> _logger;
@@ -28,7 +34,7 @@ namespace DocumentProcessor.Api.Functions
             _logger = logger;
         }
 
-        [FunctionName(nameof(SaveDocumentFunction))]
+        [FunctionName("GetSasFunction")]
         public async Task<IActionResult> GetSasAsync([HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "documents/token")]HttpRequest request)
         {
             try
@@ -44,6 +50,38 @@ namespace DocumentProcessor.Api.Functions
 
             return new InternalServerErrorResult();
         }
+
+        [FunctionName("SaveDocumentFunction")]
+        public async Task<IActionResult> SaveDocumentAsync([HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "documents")]HttpRequest request)
+        {
+            try
+            {
+                var content = await new StreamReader(request.Body).ReadToEndAsync();
+                var saveDocumentRequest = JsonConvert.DeserializeObject<SaveDocumentRequest>(content);
+                var documentBytes = Encoding.Default.GetBytes(saveDocumentRequest.Data);
+
+                var blobEndpoint = string.Format("https://ccclaimchecksg.blob.core.windows.net");
+
+                // Create a new Blob service client with Azure AD credentials.  
+                var blobClient = new BlobServiceClient(new Uri(blobEndpoint), new DefaultAzureCredential());
+
+                var blobContainerClient = blobClient.GetBlobContainerClient("largefiles");
+
+                using (var memoryStream = new MemoryStream(documentBytes))
+                {
+                    var operation = await blobContainerClient.UploadBlobAsync(saveDocumentRequest.Id, memoryStream);
+
+                    return new OkResult();
+                }
+            }
+            catch (Exception exception)
+            {
+                _logger.LogError(exception, "Error when uploading the document.");
+
+                return new ObjectResult(exception){StatusCode = (int)(HttpStatusCode.InternalServerError)};
+            }
+        }
+
 
         private async Task<Uri> GetUserDelegationSasBlob(string accountName, string containerName, string blobName)
         {
