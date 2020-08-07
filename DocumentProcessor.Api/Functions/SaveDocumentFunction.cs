@@ -82,6 +82,41 @@ namespace DocumentProcessor.Api.Functions
             }
         }
 
+        [FunctionName("GetDocumentDataFunction")]
+        public async Task<IActionResult> SaveDocumentAsync([HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "documents/{name}")]HttpRequest request, string name)
+        {
+            try
+            {
+                var blobEndpoint = "https://ccclaimchecksg.blob.core.windows.net";
+
+                // Create a new Blob service client with Azure AD credentials.  
+                var blobServiceClient = new BlobServiceClient(new Uri(blobEndpoint), new DefaultAzureCredential());
+                
+
+                var blobClient = blobServiceClient.GetBlobContainerClient("largefiles").GetBlobClient(name);
+                var downloadInformation = await blobClient.DownloadAsync();
+                if (downloadInformation?.Value?.Content == null)
+                {
+                    return new NotFoundObjectResult("File does not exist");
+                }
+
+                string content;
+                using (var reader = new StreamReader(downloadInformation.Value.Content, true))
+                {
+                    content = await reader.ReadToEndAsync();
+                }
+
+                return new OkObjectResult(new {Content = content});
+
+            }
+            catch (Exception exception)
+            {
+                _logger.LogError(exception, "Error when uploading the document.");
+
+                return new ObjectResult(exception) { StatusCode = (int)(HttpStatusCode.InternalServerError) };
+            }
+        }
+
 
         private async Task<Uri> GetUserDelegationSasBlob(string accountName, string containerName, string blobName)
         {
