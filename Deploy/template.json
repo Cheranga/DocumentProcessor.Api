@@ -62,7 +62,10 @@
                 {
                     "type": "config",
                     "name": "appsettings",
-                    "apiVersion": "2015-08-01",                    
+                    "apiVersion": "2015-08-01",
+                    "dependsOn": [
+                        "[resourceId('Microsoft.Web/sites', variables('functionAppName'))]"
+                    ],                  
                     "properties": {
                         "WEBSITE_ENABLE_SYNC_UPDATE_SITE": "true",
                         "AzureWebJobsStorage": "[concat('DefaultEndpointsProtocol=https;AccountName=', variables('storageAccountName'), ';AccountKey=', listKeys(variables('storageAccountid'),'2015-05-01-preview').key1)]",
