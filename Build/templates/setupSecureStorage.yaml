@@ -1,5 +1,6 @@
 parameters:
-  functionAppName: ''  
+  functionAppName: ''
+  operation: ''  
 
 steps:
   - task: AzureResourceManagerTemplateDeployment@3    

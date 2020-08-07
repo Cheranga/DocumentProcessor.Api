@@ -3,8 +3,7 @@ parameters:
   operation: ''
 
 steps:
-  - task: AzureResourceManagerTemplateDeployment@3    
-    displayName: 'Validate ARM Template'
+  - task: AzureResourceManagerTemplateDeployment@3        
     inputs:
       deploymentScope: 'Resource Group'
       azureResourceManagerConnection: '$(azureSubscription)'      
