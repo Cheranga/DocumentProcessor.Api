@@ -40,7 +40,7 @@ stages:
     - template: 'variables/variables.dev.yaml'
     pool:
         vmImage: ${{variables.vmImage}}
-    environment: DocumentProcessor.Api-DEV
+    environment: DocumentProcessorApi-DEV
     strategy:
       runOnce:
         deploy:
