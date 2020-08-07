@@ -1,9 +1,11 @@
 parameters:
   functionAppName: ''
   operation: ''
+  displayName: ''
 
 steps:
-  - task: AzureResourceManagerTemplateDeployment@3        
+  - task: AzureResourceManagerTemplateDeployment@3
+    displayName: '${{parameters.displayName}}'
     inputs:
       deploymentScope: 'Resource Group'
       azureResourceManagerConnection: '$(azureSubscription)'      
