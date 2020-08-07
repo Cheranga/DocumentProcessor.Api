@@ -1,0 +1,19 @@
+parameters:
+  functionAppName: ''
+  operation: ''
+
+steps:
+  - task: AzureResourceManagerTemplateDeployment@3    
+    displayName: 'Validate ARM Template'
+    inputs:
+      deploymentScope: 'Resource Group'
+      azureResourceManagerConnection: '$(azureSubscription)'      
+      action: 'Create Or Update Resource Group'
+      resourceGroupName: 'cchatdemorg'
+      location: 'Australia Southeast'
+      templateLocation: 'Linked artifact'              
+      csmFile: '$(Pipeline.Workspace)/deploy/template.json'
+      csmParametersFile: '$(Pipeline.Workspace)/deploy/template.parameters.json'
+      overrideParameters: |
+        -appName "${{parameters.functionAppName}}"        
+      deploymentMode: '${{parameters.operation}}'

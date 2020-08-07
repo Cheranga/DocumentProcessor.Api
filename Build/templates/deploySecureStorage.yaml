@@ -1,0 +1,17 @@
+parameters:
+  functionAppName: ''  
+
+steps:
+  - task: AzureResourceManagerTemplateDeployment@3    
+    displayName: 'Deploy Secure Storage Account'
+    inputs:
+      deploymentScope: 'Resource Group'
+      azureResourceManagerConnection: '$(azureSubscription)'      
+      action: 'Create Or Update Resource Group'
+      resourceGroupName: 'cchatdemorg'
+      location: 'Australia Southeast'
+      templateLocation: 'Linked artifact'              
+      csmFile: '$(Pipeline.Workspace)/deploy/deploySecureStorageTemplate.json'      
+      overrideParameters: |
+        -appName "${{parameters.functionAppName}}"        
+      deploymentMode: '${{parameters.operation}}'

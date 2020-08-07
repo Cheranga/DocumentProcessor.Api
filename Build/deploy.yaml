@@ -1,0 +1,19 @@
+steps:
+
+- template: 'templates/setupARM.yaml'
+  parameters:        
+    functionAppName: $(functionAppName)
+    operation: 'Validate'   
+
+- template: 'templates/setupARM.yaml'
+  parameters:        
+    functionAppName: $(functionAppName)
+    operation: 'Incremental'  
+    
+- template: 'templates/deployFunctionApp.yaml'
+  parameters:
+    functionAppName: $(functionAppName)
+
+- template: 'templates/deploySecureStorage.yaml'
+  parameters:
+    functionAppName: $(functionAppName)
