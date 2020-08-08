@@ -17,11 +17,17 @@ namespace DocumentProcessor.Api.Functions
     {
         private readonly IDocumentService _documentService;
         private readonly ILogger<ProcessDocumentFunction> _logger;
+        private readonly long _maxRequestSize;
 
         public ProcessDocumentFunction(IDocumentService documentService, ILogger<ProcessDocumentFunction> logger)
         {
             _documentService = documentService;
             _logger = logger;
+
+            if (!long.TryParse(Environment.GetEnvironmentVariable("MaxRequestSize"), out _maxRequestSize))
+            {
+                _maxRequestSize = 20000;
+            }
         }
 
         [FunctionName(nameof(ProcessDocumentFunction))]
@@ -35,7 +41,7 @@ namespace DocumentProcessor.Api.Functions
                 var content = await new StreamReader(request.Body).ReadToEndAsync();
                 var saveDocumentRequest = JsonConvert.DeserializeObject<ProcessDocumentRequest>(content);
 
-                var isLarge = request.Body.Length >= 250000;
+                var isLarge = request.Body.Length >= _maxRequestSize;
                 var status = await _documentService.ProcessDocumentAsync(saveDocumentRequest, isLarge, messages);
                 
                 if (status)

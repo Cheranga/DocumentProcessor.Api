@@ -25,6 +25,13 @@
             "metadata": {
                 "description": "Service bus connection string."
             }
+        },
+        "maxRequestSize": {
+            "type": "int",
+            "defaultValue":20000,
+            "metadata": {
+                "description": "If the HTTP request is larger than this size the claim-check pattern will be in effect."
+            }
         }
     },
     "variables": {
@@ -89,6 +96,7 @@
                         "SecureStorageConfiguration.Container": "[parameters('secureStorageConfiguration.Container')]",
                         "AzureWebJobsServiceBus": "[parameters('serviceBusConnectionString')]",
                         "ProcessDocumentTopic":"topic-documents",
+                        "MaxRequestSize":"[parameters('maxRequestSize')]",
                         "WEBSITE_ENABLE_SYNC_UPDATE_SITE": "true",
                         "AzureWebJobsStorage": "[concat('DefaultEndpointsProtocol=https;AccountName=', variables('storageAccountName'), ';AccountKey=', listKeys(variables('storageAccountid'),'2015-05-01-preview').key1)]",
                         "WEBSITE_CONTENTAZUREFILECONNECTIONSTRING": "[concat('DefaultEndpointsProtocol=https;AccountName=', variables('storageAccountName'), ';AccountKey=', listKeys(variables('storageAccountid'),'2015-05-01-preview').key1)]",

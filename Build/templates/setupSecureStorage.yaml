@@ -13,7 +13,7 @@ steps:
       resourceGroupName: 'cchatdemorg'
       location: 'Australia Southeast'
       templateLocation: 'Linked artifact'              
-      csmFile: '$(Pipeline.Workspace)/deploy/deploySecureStorageTemplate.json'      
+      csmFile: '$(Pipeline.Workspace)/deploy/securestorage.template.json'      
       overrideParameters: |
         -appName "${{parameters.functionAppName}}"        
       deploymentMode: '${{parameters.operation}}'
