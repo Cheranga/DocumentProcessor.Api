@@ -83,17 +83,20 @@ namespace DocumentProcessor.Api.Functions
         }
 
         [FunctionName("GetDocumentDataFunction")]
-        public async Task<IActionResult> SaveDocumentAsync([HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "documents/{name}")]HttpRequest request, string name)
+        public async Task<IActionResult> GetDocumentDataAsync([HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "documents")]HttpRequest request)
         {
             try
             {
+                _logger.LogInformation("Getting document data.");
+                string documentName = request.Query["document"];
+
                 var blobEndpoint = "https://ccclaimchecksg.blob.core.windows.net";
 
                 // Create a new Blob service client with Azure AD credentials.  
                 var blobServiceClient = new BlobServiceClient(new Uri(blobEndpoint), new DefaultAzureCredential());
                 
 
-                var blobClient = blobServiceClient.GetBlobContainerClient("largefiles").GetBlobClient(name);
+                var blobClient = blobServiceClient.GetBlobContainerClient("largefiles").GetBlobClient(documentName);
                 var downloadInformation = await blobClient.DownloadAsync();
                 if (downloadInformation?.Value?.Content == null)
                 {
