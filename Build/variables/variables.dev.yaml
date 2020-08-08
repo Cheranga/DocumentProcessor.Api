@@ -3,3 +3,7 @@ variables:
 # - group: CommsApiDev
 - name: functionAppName
   value: ccdocprocapi
+- name: secureStorageAccountName
+  value: ccclaimchecksg
+- name: secureStorageContainer
+  value: largefiles    

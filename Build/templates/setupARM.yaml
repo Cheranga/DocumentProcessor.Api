@@ -1,5 +1,4 @@
 parameters:
-  functionAppName: ''
   operation: ''
   displayName: ''
 
@@ -16,5 +15,7 @@ steps:
       csmFile: '$(Pipeline.Workspace)/deploy/template.json'
       csmParametersFile: '$(Pipeline.Workspace)/deploy/template.parameters.json'
       overrideParameters: |
-        -appName "${{parameters.functionAppName}}"        
+        -appName "$(functionAppName)" 
+        -secureStorageConfiguration.Account "$(secureStorageAccountName)" 
+        -secureStorageConfiguration.Container "$(secureStorageContainer)" 
       deploymentMode: '${{parameters.operation}}'

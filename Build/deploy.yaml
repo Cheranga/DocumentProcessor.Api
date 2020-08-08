@@ -1,20 +1,16 @@
 steps:
 
 - template: 'templates/setupARM.yaml'  
-  parameters:        
-    functionAppName: $(functionAppName)
+  parameters:            
     operation: 'Validate'
     displayName: 'Validate function app deployment'   
 
 - template: 'templates/setupARM.yaml'  
-  parameters:        
-    functionAppName: $(functionAppName)
+  parameters:            
     operation: 'Incremental'  
     displayName: 'Deploy function app infrastructure'       
     
-- template: 'templates/deployFunctionApp.yaml'
-  parameters:
-    functionAppName: $(functionAppName)
+- template: 'templates/deployFunctionApp.yaml'  
 
 # - template: 'templates/setupSecureStorage.yaml'  
 #   parameters:

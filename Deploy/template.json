@@ -7,7 +7,19 @@
             "metadata": {
                 "description": "The name of the function app that you wish to create."
             }
-        }       
+        },
+        "secureStorageConfiguration.Account": {
+            "type":"string",
+            "metadata": {
+                "description": "The secure storage account name"
+            }
+        },
+        "secureStorageConfiguration.Container": {
+            "type":"string",
+            "metadata": {
+                "description": "The container where the blobs will be saved or accessed securely."
+            }
+        }
     },
     "variables": {
         "functionAppName": "[parameters('appName')]",
@@ -67,6 +79,8 @@
                         "[resourceId('Microsoft.Web/sites', variables('functionAppName'))]"
                     ],                  
                     "properties": {
+                        "SecureStorageConfiguration.Account": "[parameters('secureStorageConfiguration.Account')]",
+                        "SecureStorageConfiguration.Container": "[parameters('secureStorageConfiguration.Container')]",
                         "WEBSITE_ENABLE_SYNC_UPDATE_SITE": "true",
                         "AzureWebJobsStorage": "[concat('DefaultEndpointsProtocol=https;AccountName=', variables('storageAccountName'), ';AccountKey=', listKeys(variables('storageAccountid'),'2015-05-01-preview').key1)]",
                         "WEBSITE_CONTENTAZUREFILECONNECTIONSTRING": "[concat('DefaultEndpointsProtocol=https;AccountName=', variables('storageAccountName'), ';AccountKey=', listKeys(variables('storageAccountid'),'2015-05-01-preview').key1)]",
