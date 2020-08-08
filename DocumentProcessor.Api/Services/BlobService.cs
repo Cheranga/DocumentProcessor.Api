@@ -21,11 +21,11 @@ namespace DocumentProcessor.Api.Services
             _logger = logger;
         }
 
-        public async Task<bool> UploadBlobAsync(SaveBlobRequest saveBlobRequest)
+        public async Task<bool> UploadBlobAsync(string documentId, string data)
         {
             try
             {
-                var documentBytes = Encoding.Default.GetBytes(saveBlobRequest.Data);
+                var documentBytes = Encoding.Default.GetBytes(data);
 
                 var blobEndpoint = $"https://{_storageConfiguration.Account}.blob.core.windows.net";
 
@@ -35,7 +35,7 @@ namespace DocumentProcessor.Api.Services
 
                 using (var memoryStream = new MemoryStream(documentBytes))
                 {
-                    await blobContainerClient.UploadBlobAsync(saveBlobRequest.Id, memoryStream);
+                    await blobContainerClient.UploadBlobAsync(documentId, memoryStream);
                     return true;
                 }
             }

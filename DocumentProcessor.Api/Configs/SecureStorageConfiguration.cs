@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace DocumentProcessor.Api.Configs
+﻿namespace DocumentProcessor.Api.Configs
 {
     public class SecureStorageConfiguration
     {

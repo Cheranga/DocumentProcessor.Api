@@ -19,6 +19,7 @@ namespace DocumentProcessor.Api
                 Container = Environment.GetEnvironmentVariable("SecureStorageConfiguration.Container")
             });
 
+            services.AddSingleton<IDocumentService, DocumentService>();
             services.AddSingleton<IBlobService, BlobService>();
         }
     }
