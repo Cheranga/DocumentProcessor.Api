@@ -18,4 +18,5 @@ steps:
         -appName "$(functionAppName)" 
         -secureStorageConfiguration.Account "$(secureStorageAccountName)" 
         -secureStorageConfiguration.Container "$(secureStorageContainer)" 
+        -serviceBusConnectionString "$(writeOnlyAsbConnectionString)" 
       deploymentMode: '${{parameters.operation}}'
