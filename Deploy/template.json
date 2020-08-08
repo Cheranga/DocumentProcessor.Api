@@ -88,7 +88,7 @@
                         "SecureStorageConfiguration.Account": "[parameters('secureStorageConfiguration.Account')]",
                         "SecureStorageConfiguration.Container": "[parameters('secureStorageConfiguration.Container')]",
                         "AzureWebJobsServiceBus": "[parameters('serviceBusConnectionString')]",
-                        "ProcessDocumentTopic":"sb-documents-processing-dev",
+                        "ProcessDocumentTopic":"topic-documents",
                         "WEBSITE_ENABLE_SYNC_UPDATE_SITE": "true",
                         "AzureWebJobsStorage": "[concat('DefaultEndpointsProtocol=https;AccountName=', variables('storageAccountName'), ';AccountKey=', listKeys(variables('storageAccountid'),'2015-05-01-preview').key1)]",
                         "WEBSITE_CONTENTAZUREFILECONNECTIONSTRING": "[concat('DefaultEndpointsProtocol=https;AccountName=', variables('storageAccountName'), ';AccountKey=', listKeys(variables('storageAccountid'),'2015-05-01-preview').key1)]",

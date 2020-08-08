@@ -50,7 +50,7 @@ namespace DocumentProcessor.Api.Services
                     };
 
                     var message = new Message(Encoding.Default.GetBytes(JsonConvert.SerializeObject(processDocumentMessage)));
-                    message.UserProperties.Add("DocumentType", request.DocumentType);
+                    message.UserProperties.Add("DocumentType", request.DocumentType.ToString());
 
                     await messages.AddAsync(message);
                 }
