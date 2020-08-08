@@ -26,34 +26,31 @@ namespace DocumentProcessor.Api.Services
         {
             try
             {
+                ProcessDocumentMessage processDocumentMessage;
+
                 if (isLargeFile)
                 {
                     var documentId = $"{request.Id}-{Guid.NewGuid():N}";
                     
                     await _blobService.UploadBlobAsync(documentId, JsonConvert.SerializeObject(request));
 
-                    var processDocumentMessage = new ProcessDocumentMessage
+                    processDocumentMessage = new ProcessDocumentMessage
                     {
                         RequestReferenceId = documentId
                     };
-
-                    var message = new Message(Encoding.Default.GetBytes(JsonConvert.SerializeObject(processDocumentMessage)));
-                    message.UserProperties.Add("DocumentType",request.DocumentType);
-                    
-                    await messages.AddAsync(message);
                 }
                 else
                 {
-                    var processDocumentMessage = new ProcessDocumentMessage
+                    processDocumentMessage = new ProcessDocumentMessage
                     {
                         Request = request
                     };
-
-                    var message = new Message(Encoding.Default.GetBytes(JsonConvert.SerializeObject(processDocumentMessage)));
-                    message.UserProperties.Add("DocumentType", request.DocumentType.ToString());
-
-                    await messages.AddAsync(message);
                 }
+
+                var message = new Message(Encoding.Default.GetBytes(JsonConvert.SerializeObject(processDocumentMessage)));
+                message.UserProperties.Add("DocumentType", request.DocumentType.ToString());
+
+                await messages.AddAsync(message);
 
                 return true;
             }
