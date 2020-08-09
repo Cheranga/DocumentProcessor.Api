@@ -1,5 +1,5 @@
 ﻿using System.Threading.Tasks;
-using DocumentProcessor.Api.Functions;
+using DocumentProcessor.Api.DTO;
 using Microsoft.Azure.ServiceBus;
 using Microsoft.Azure.WebJobs;
 

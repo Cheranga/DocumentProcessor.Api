@@ -1,7 +1,7 @@
 ﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 
-namespace DocumentProcessor.Api.Functions
+namespace DocumentProcessor.Api.DTO
 {
     public class ProcessDocumentRequest
     {

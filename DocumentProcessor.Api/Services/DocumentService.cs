@@ -1,9 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
 using DocumentProcessor.Api.DTO;
-using DocumentProcessor.Api.Functions;
 using Microsoft.Azure.ServiceBus;
 using Microsoft.Azure.WebJobs;
 using Microsoft.Extensions.Logging;
@@ -31,7 +29,7 @@ namespace DocumentProcessor.Api.Services
                 if (isLargeFile)
                 {
                     var documentId = $"{request.Id}-{Guid.NewGuid():N}";
-                    
+
                     await _blobService.UploadBlobAsync(documentId, JsonConvert.SerializeObject(request));
 
                     processDocumentMessage = new ProcessDocumentMessage

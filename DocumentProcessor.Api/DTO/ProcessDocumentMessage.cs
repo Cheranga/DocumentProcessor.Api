@@ -1,6 +1,4 @@
-﻿using DocumentProcessor.Api.Functions;
-
-namespace DocumentProcessor.Api.DTO
+﻿namespace DocumentProcessor.Api.DTO
 {
     public class ProcessDocumentMessage
     {
