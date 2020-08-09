@@ -8,6 +8,13 @@
                 "description": "The function app which will get secure access to the storage account."
             }
         },
+        "appList": {
+            "type": "array",
+            "defaultValue": [
+                "ccdocprocapi",
+                "ccdocproc"
+            ]            
+        },
         "builtInRoleType": {
             "type": "string",
             "defaultValue": "Storage Blob Data Contributor",
@@ -54,13 +61,17 @@
         {
             "type": "Microsoft.Storage/storageAccounts/providers/roleAssignments",
             "apiVersion": "2018-09-01-preview",
-            "name": "[concat(variables('storageName'), '/Microsoft.Authorization/', guid(uniqueString(variables('storageName'))))]",
+            "name": "[concat(variables('storageName'), '/Microsoft.Authorization/', guid(uniqueString(parameters('appList')[copyIndex()])))]",
             "dependsOn": [
                 "[variables('storageName')]"
             ],
             "properties": {
                 "roleDefinitionId": "[variables(parameters('builtInRoleType'))]",
-                "principalId": "[reference(concat('Microsoft.Web/sites/',  parameters('appName'), '/providers/Microsoft.ManagedIdentity/Identities/default'), '2015-08-31-PREVIEW').principalId]"
+                "principalId": "[reference(concat('Microsoft.Web/sites/',  parameters('appList')[copyIndex()], '/providers/Microsoft.ManagedIdentity/Identities/default'), '2015-08-31-PREVIEW').principalId]"
+            },
+            "copy":{
+                "name":"allowedApplications",
+                "count":"[length(parameters('appList'))]"
             }
         }
     ]
